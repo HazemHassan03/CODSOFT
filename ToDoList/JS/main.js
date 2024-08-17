@@ -11,51 +11,55 @@ if (localStorage.length > 0) {
 }
 
 function addTask(val) {
-  if (val === "") {
-    return 0;
+  if (val !== "") {
+    if (document.body.contains(document.querySelector(".no-tasks"))) {
+      document.querySelector(".no-tasks").remove();
+    }
+    let div = document.createElement("div");
+    let p = document.createElement("p");
+    let pText = document.createTextNode(val);
+    let remove = document.createElement("button");
+    let removeText = document.createTextNode("Delete");
+    let edit = document.createElement("button");
+    let editText = document.createTextNode("Edit");
+    p.append(pText);
+    remove.append(removeText);
+    remove.classList.add("remove");
+    edit.append(editText);
+    edit.classList.add("edit");
+    let options = document.createElement("div");
+    options.append(edit, remove);
+    options.style.cssText = "display: flex; gap: 10px; align-self: center";
+    p.style.cssText =
+      "align-self: center; overflow:hidden; text-overflow:ellipsis;";
+    div.append(p, options);
+    div.classList.add("task");
+    content.append(div);
+    div.style.cssText = `display: flex;
+      justify-content: space-between;
+      background-color: white;
+      padding: 10px;
+      border-radius: 5px;
+      gap: 10px;`;
+    remove.style.cssText = `
+      border: none;
+      background-color: #ff4d4d;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 5px;`;
+    edit.style.cssText = `
+      border: none;
+      background-color: #ff4d4d;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 5px;`;
+    ++id;
+    div.id = id;
+  } else {
+    task.focus();
   }
-  let div = document.createElement("div");
-  let p = document.createElement("p");
-  let pText = document.createTextNode(val);
-  let remove = document.createElement("button");
-  let removeText = document.createTextNode("Delete");
-  let edit = document.createElement("button");
-  let editText = document.createTextNode("Edit");
-  p.append(pText);
-  remove.append(removeText);
-  remove.classList.add("remove");
-  edit.append(editText);
-  edit.classList.add("edit");
-  let options = document.createElement("div");
-  options.append(edit, remove);
-  options.style.cssText = "display: flex; gap: 10px; align-self: center";
-  p.style.cssText =
-    "align-self: center; overflow:hidden; text-overflow:ellipsis;";
-  div.append(p, options);
-  div.classList.add("task");
-  content.append(div);
-  div.style.cssText = `display: flex;
-    justify-content: space-between;
-    background-color: white;
-    padding: 10px;
-    border-radius: 5px;
-    gap: 10px;`;
-  remove.style.cssText = `
-    border: none;
-    background-color: #ff4d4d;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 5px;`;
-  edit.style.cssText = `
-    border: none;
-    background-color: #ff4d4d;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 5px;`;
-  ++id;
-  div.id = id;
 }
 
 function addTaskToLocalStorage(val, num = id) {
@@ -67,6 +71,13 @@ let tasks = content.children;
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("remove")) {
     e.target.parentElement.parentElement.remove();
+    if (content.childElementCount === 0) {
+      let span = document.createElement("span");
+      let text = document.createTextNode("No Tasks");
+      span.append(text);
+      span.classList.add("no-tasks");
+      content.append(span);
+    }
     localStorage.removeItem(`Task${e.target.parentElement.parentElement.id}`);
     localStorage.clear();
     for (let i = 0; i < tasks.length; i++) {
@@ -80,6 +91,8 @@ add.addEventListener("click", (e) => {
   e.preventDefault();
   addTask(task.value);
   addTaskToLocalStorage(task.value);
+  task.value = "";
+  task.focus();
 });
 
 let edit = document.querySelectorAll(".edit");
@@ -96,12 +109,13 @@ function hide() {
   editScreen.style.display = "none";
   overlay.style.display = "none";
 }
-
+let target;
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("edit")) {
+    target = e.target.parentElement;
     show();
-    editInput.value =
-      e.target.parentElement.parentElement.childNodes[0].textContent;
+    editInput.value = target.previousSibling.childNodes[0].textContent;
+    editInput.focus();
     editInputSave.addEventListener("click", () => {
       if (editInput.value === "") {
         let p = document.createElement("p");
@@ -115,12 +129,8 @@ document.addEventListener("click", (e) => {
         }, 3000);
       } else {
         hide();
-        e.target.parentElement.parentElement.childNodes[0].textContent =
-          editInput.value;
-        localStorage.setItem(
-          `Task${e.target.parentElement.parentElement.id}`,
-          editInput.value
-        );
+        target.previousSibling.childNodes[0].textContent = editInput.value;
+        localStorage.setItem(`Task${target.parentElement.id}`, editInput.value);
       }
     });
   }
@@ -133,6 +143,13 @@ let allTasks = document.querySelectorAll(".task");
 clearAll.addEventListener("click", () => {
   allTasks.forEach((task) => {
     task.remove();
+    if (content.childElementCount === 0) {
+      let span = document.createElement("span");
+      let text = document.createTextNode("No Tasks");
+      span.append(text);
+      span.classList.add("no-tasks");
+      content.append(span);
+    }
     localStorage.clear();
   });
 });
