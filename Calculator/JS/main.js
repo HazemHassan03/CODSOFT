@@ -8,7 +8,7 @@ function append(input) {
   screen.value += input;
 }
 buttons.forEach((button) => {
-  button.addEventListener("click", (e) => {
+  button.addEventListener("click", () => {
     if (button === decimal && screen.value === "") {
       append("0.");
     } else if (button !== equal && button !== clear) {
