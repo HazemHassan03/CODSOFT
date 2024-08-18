@@ -34,6 +34,7 @@ h1 {
   justify-content: space-between;
   gap: 20px;
   margin-bottom: 20px;
+  position: relative;
 }
 .time div {
   padding: 10px;
@@ -52,4 +53,12 @@ h1 {
 }
 .copyright img {
   max-width: 100%;
+}
+#hour {
+  position: relative;
+}
+#am-or-pm {
+  position: absolute;
+  right: 0;
+  top: -25px;
 }
