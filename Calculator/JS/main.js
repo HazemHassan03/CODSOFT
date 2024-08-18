@@ -28,8 +28,20 @@ equal.addEventListener("click", () => {
   if (screen.value === "") {
     screen.value = "";
   } else {
+    let newValue = screen.value
+      .split("")
+      .map((e) => {
+        if (e === "×") {
+          return "*";
+        } else if (e === "÷") {
+          return "/";
+        } else {
+          return e;
+        }
+      })
+      .join("");
     try {
-      screen.value = eval(screen.value);
+      screen.value = eval(newValue);
     } catch {
       let value = screen.value;
       screen.value = "Error";
