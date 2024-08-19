@@ -29,14 +29,15 @@ h1 {
   font-size: 50px;
   text-transform: uppercase;
 }
-.time {
+.time, .date {
   display: flex;
   justify-content: space-between;
   gap: 20px;
   margin-bottom: 20px;
   position: relative;
 }
-.time div {
+.time div,
+.date div {
   padding: 10px;
   background-color: var(--color1);
   font-size: 50px;
@@ -54,11 +55,41 @@ h1 {
 .copyright img {
   max-width: 100%;
 }
-#hour {
-  position: relative;
-}
 #am-or-pm {
   position: absolute;
   right: 0;
   top: -25px;
+}
+#h, #d {
+  position: absolute;
+  left: 73px;
+  top: 1px;
+}
+#m1, #m2 {
+  position: absolute;
+  left: 176px;
+  top: -2px;
+}
+#s, #y {
+  position: absolute;
+  right: 4px;
+  top: -2px;
+}
+#change {
+  background-color: var(--color1);
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: auto;
+  width: fit-content;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: background-color 0.5s;
+  -webkit-transition: background-color 0.5s;
+  -moz-transition: background-color 0.5s;
+  -ms-transition: background-color 0.5s;
+  -o-transition: background-color 0.5s;
+  user-select: none;
+}
+#change:active {
+  background-color: #cf3f3f;
 }
