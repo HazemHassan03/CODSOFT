@@ -3,6 +3,7 @@
   --color2: #002b56;
   --black: black;
   --white: white;
+  --content: attr(data-type);
 }
 * {
   margin: 0;
@@ -29,23 +30,50 @@ h1 {
   font-size: 50px;
   text-transform: uppercase;
 }
-.time, .date {
+.time,
+.date {
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
+  align-items: center;
+  gap: 5px;
   margin-bottom: 20px;
   position: relative;
+  transition: background-color 1s, gap 0.5s;
+  -webkit-transition: background-color 1s, gap 0.5s;
+  -moz-transition: background-color 1s, gap 0.5s;
+  -ms-transition: background-color 1s, gap 0.5s;
+  -o-transition: background-color 1s, gap 0.5s;
 }
-.time div,
-.date div {
+.time div:not(.sep),
+.date div:not(.sep) {
   padding: 10px;
-  background-color: var(--color1);
   font-size: 50px;
   width: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 80px;
+  position: relative;
+  background-color: var(--color1);
+}
+.time div:not(.sep)::after,
+.date div:not(.sep)::after {
+  content: var(--content);
+  font-size: 14px;
+  position: absolute;
+  top: 1px;
+  right: 4px;
+}
+.time div.sep,
+.date div.sep {
+  height: 50px;
+  width: 3px;
+  background-color: white;
+  opacity: 0;
+  transition: opacity 0.5s;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -ms-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
 }
 .copyright {
   display: block;
@@ -60,29 +88,36 @@ h1 {
   right: 0;
   top: -25px;
 }
-#h, #d {
+#h,
+#d {
   position: absolute;
   left: 73px;
   top: 1px;
 }
-#m1, #m2 {
+#m1,
+#m2 {
   position: absolute;
   left: 176px;
   top: -2px;
 }
-#s, #y {
+#s,
+#y {
   position: absolute;
   right: 4px;
   top: -2px;
 }
-#change {
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.options div {
   background-color: var(--color1);
   padding: 5px 10px;
   border-radius: 5px;
-  margin: auto;
-  width: fit-content;
   cursor: pointer;
-  margin-bottom: 15px;
   transition: background-color 0.5s;
   -webkit-transition: background-color 0.5s;
   -moz-transition: background-color 0.5s;
@@ -90,6 +125,6 @@ h1 {
   -o-transition: background-color 0.5s;
   user-select: none;
 }
-#change:active {
+.options div:active {
   background-color: #cf3f3f;
 }
