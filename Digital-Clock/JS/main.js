@@ -6,13 +6,26 @@ let month = document.getElementById("month");
 let year = document.getElementById("year");
 let amOrPm = document.getElementById("am-or-pm");
 let changeTimeFormat = document.getElementById("change");
+let changeStyle = document.getElementById("style");
+let notSeparators = document.querySelectorAll("[data-type]");
+let notSeparatorsType = document.querySelectorAll("div::after");
+let separators = document.querySelectorAll(".sep");
 let check;
+let style;
 if (localStorage.getItem("Time Format")) {
   if (localStorage.getItem("Time Format") === "true") {
     check = true;
   } else {
     check = false;
   }
+}
+if (localStorage.getItem("Style")) {
+  if (localStorage.getItem("Style") === "true") {
+    style = true;
+  } else {
+    style = false;
+  }
+  change();
 }
 if (localStorage.getItem("Time Format") === "true") {
   changeTimeFormat.textContent = "24-hour Format";
@@ -76,6 +89,53 @@ changeTimeFormat.addEventListener("click", () => {
     check = false;
     localStorage.setItem("Time Format", check);
   }
+});
+function change() {
+  if (style) {
+    separators.forEach((sep) => {
+      sep.style.cssText = `
+      opacity: 1;
+      `;
+      document.querySelector(".date").style.cssText = `
+      gap: 0;
+      background-color: var(--color1);
+      `;
+      document.querySelector(".time").style.cssText = `
+      gap: 0;
+      background-color: var(--color1);
+      `;
+      notSeparators.forEach((e) => {
+        e.style.cssText += `background: none;`;
+      });
+      document.documentElement.style.cssText = '--content: ""';
+    });
+    localStorage.setItem("Style", style);
+  } else {
+    separators.forEach((sep) => {
+      sep.style.cssText = `
+      opacity: 0;
+      `;
+      document.querySelector(".date").style.cssText = `
+      gap: 5px;
+      `;
+      document.querySelector(".time").style.cssText = `
+      gap: 5px;
+      `;
+      notSeparators.forEach((e) => {
+        e.style.cssText += `background-color: var(--color1);`;
+      });
+      document.documentElement.style.cssText = "--content: attr(data-type)";
+    });
+    localStorage.setItem("Style", style);
+  }
+}
+changeStyle.addEventListener("click", () => {
+  if (style) {
+    style = false;
+  } else {
+    style = true;
+  }
+  change();
 });
 update();
 setInterval(update, 1000);
