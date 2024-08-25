@@ -1,2 +1,2 @@
 # CODSOFT
-Internship
+Internship as a Javascript developer
